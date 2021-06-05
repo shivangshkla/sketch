@@ -1,17 +1,30 @@
 const grid = document.querySelector('.container');
-let item;
+let width = 16;
 let color1,color2,color3;
 function input(){
     reset();
-    let width = prompt('Enter Width:');
+     width = prompt('Enter Width:');
+    gridItems(width,width);
+}
+const clear = document.querySelector('.clear');
+clear.onclick = function(){
+    reset();
     gridItems(width,width);
 }
 function gridItems(a,b){
-    const size = Math.round(((Math.sqrt((250000/(a*b))))-2))+"px";
+    const size = Math.floor(((Math.sqrt((250000/(a*b))))-2))+"px";
     for(let i = 0; i < a*b; i++){
-      grid.innerHTML += `<div onmouseover = "trail(this)" class ="items" style = "width:`+size+`;height :`+size+`;" ></div>`;
+        const item = document.createElement('div');
+        item.className += 'items';
+        item.onmouseover = function(){
+            randomColor();
+            item.style.background = "rgb("+color1+","+color2+","+color3+")";
+
+        }
+            item.style.width = size;
+            item.style.height = size;
+      grid.append(item);
     }
-    console.log(`<div onmouseover = "trail(this)" class ="items" style = "width:`+size+`;height :`+size+`;" ></div>`);
 }
 function defaultGrid(){
     gridItems(16,16);
@@ -21,12 +34,6 @@ function randomColor(){
   color1 = Math.floor(Math.random()*255);
   color2 = Math.floor(Math.random()*255);
   color3 = Math.floor(Math.random()*255);
-}
-
-function trail(x){
-    randomColor();
-    console.log("rgb("+color1+","+color2+","+color3+")");
-    x.style.background = "rgb("+color1+","+color2+","+color3+")";
 }
 function reset(){
     removeAllChildNodes(grid);
